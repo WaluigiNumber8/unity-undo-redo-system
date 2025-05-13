@@ -80,6 +80,7 @@ namespace RedRats.DrawingGrid.SpriteDrawing
         /// <param name="sprite">The sprite to draw (MUST be same size as unit).</param>
         public void DrawTo(Sprite canvas, Vector2Int pos, Sprite sprite)
         {
+            Debug.Log($"Draw to {pos}");
             Texture2D canvasTex = canvas.texture;
             Texture2D tex = sprite.texture;
             Preconditions.IsIntEqual(tex.width, 16, $"{tex.name}'s width");

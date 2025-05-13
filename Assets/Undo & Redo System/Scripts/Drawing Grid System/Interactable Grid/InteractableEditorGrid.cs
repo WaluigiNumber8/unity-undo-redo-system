@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using RedRats.Core;
 using RedRats.DrawingGrid.SpriteDrawing;
+using RedRats.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -54,13 +54,13 @@ namespace RedRats.DrawingGrid
         public void OnPointerMove(PointerEventData eventData)
         {
             RecalculateSelectedPosition(eventData.position);
-            //If the pointer is over the grid and the left mouse button is held, invoke the OnClick event.
-            if (Input.GetMouseButton(0))
+            if (InputSystem.Instance.UI.Select.IsHeld)
             {
                 OnClick?.Invoke(selectedPos);
                 return;
             }
-            if (Input.GetMouseButton(1))
+            
+            if (InputSystem.Instance.UI.ContextSelect.IsHeld)
             {
                 OnClickAlternative?.Invoke(selectedPos);
                 return;

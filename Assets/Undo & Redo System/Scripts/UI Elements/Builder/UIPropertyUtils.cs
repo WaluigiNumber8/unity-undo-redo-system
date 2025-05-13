@@ -10,6 +10,7 @@ namespace RedRats.UndoRedo.UIElements
         public static void ReleaseAllProperties(this Transform content, bool includeSelf = false)
         {
             IPBase[] p = content.GetComponentsInChildren<IPBase>();
+            if (p.Length == 0) return;
             foreach (IPBase property in p)
             {
                 if (includeSelf == false && property.transform == content) continue;

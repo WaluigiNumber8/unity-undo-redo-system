@@ -13,24 +13,17 @@ namespace RedRats.UndoRedo.UIElements
     {
         [Header("Property prefabs")] 
         [SerializeField] private IPHeader headerProperty;
-        [SerializeField] private IPPlainText plainTextProperty;
         [SerializeField] private IPInputField inputFieldProperty;
-        [SerializeField] private IPInputField inputFieldAreaProperty;
         [SerializeField] private IPDropdown dropdownProperty;
         [SerializeField] private IPToggle toggleProperty;
         [SerializeField] private IPSlider sliderProperty;
-        
-        [Header("Other properties")]
-        [SerializeField] private ContentBlockInfo contentBlocks;
-        [SerializeField] private VerticalVariantsInfo verticalVariants;
         
         [Header("Other")]
         [SerializeField] private Transform poolParent;
 
         private UIPropertyPool<IPHeader> headerPool;
-        private UIPropertyPool<IPPlainText> plainTextPool, plainTextVerticalPool;
-        private UIPropertyPool<IPInputField> inputFieldPool, inputFieldAreaPool, inputFieldVerticalPool;
-        private UIPropertyPool<IPDropdown> dropdownPool, dropdownVerticalPool;
+        private UIPropertyPool<IPInputField> inputFieldPool;
+        private UIPropertyPool<IPDropdown> dropdownPool;
         private UIPropertyPool<IPToggle> togglePool;
         private UIPropertyPool<IPSlider> sliderPool;
         
@@ -40,19 +33,10 @@ namespace RedRats.UndoRedo.UIElements
         {
             base.Awake();
             headerPool = new UIPropertyPool<IPHeader>(headerProperty, poolParent, 25, 100);
-            plainTextPool = new UIPropertyPool<IPPlainText>(plainTextProperty, poolParent, 50, 150);
-            plainTextVerticalPool = new UIPropertyPool<IPPlainText>(verticalVariants.plainTextProperty, poolParent, 50, 150);
             inputFieldPool = new UIPropertyPool<IPInputField>(inputFieldProperty, poolParent, 50, 150);
-            inputFieldAreaPool = new UIPropertyPool<IPInputField>(inputFieldAreaProperty, poolParent, 50, 150);
-            inputFieldVerticalPool = new UIPropertyPool<IPInputField>(verticalVariants.inputFieldProperty, poolParent, 50, 150);
             dropdownPool = new UIPropertyPool<IPDropdown>(dropdownProperty, poolParent, 50, 150);
-            dropdownVerticalPool = new UIPropertyPool<IPDropdown>(verticalVariants.dropdownProperty, poolParent, 50, 150);
             togglePool = new UIPropertyPool<IPToggle>(toggleProperty, poolParent, 50, 150);
             sliderPool = new UIPropertyPool<IPSlider>(sliderProperty, poolParent, 50, 150);
-            
-            contentBlockHorizontalPool = new UIPropertyPool<IPContentBlock>(contentBlocks.horizontal, poolParent, 10, 40);
-            contentBlockVerticalPool = new UIPropertyPool<IPContentBlock>(contentBlocks.vertical, poolParent, 10, 40);
-            contentBlockColumn2Pool = new UIPropertyPool<IPContentBlock>(contentBlocks.column2, poolParent, 10, 40);
         }
 
         #region Properties
@@ -78,34 +62,13 @@ namespace RedRats.UndoRedo.UIElements
         /// <param name="parent">Under which transform is this property going to be created.</param>
         /// <param name="whenFinishEditing">Is called when the user finishes editing the InputField.</param>
         /// <param name="isDisabled">Initialize the property as a non-interactable.</param>
-        /// <param name="isVertical">Use the vertical variant (title text is above field)?</param>
         /// <param name="characterValidation">The validation to use for inputted symbols.</param>
         /// <param name="minLimit">The minimum allowed value (when InputField deals with numbers).</param>
         /// <param name="maxLimit">The maximum allowed value (when InputField deals with numbers).</param>
         /// <returns>The property itself.</returns>
-        public void BuildInputField(string title, string value, Transform parent, Action<string> whenFinishEditing, bool isDisabled = false, bool isVertical = false, TMP_InputField.CharacterValidation characterValidation = TMP_InputField.CharacterValidation.Regex, float minLimit = float.MinValue, float maxLimit = float.MaxValue)
+        public void BuildInputField(string title, string value, Transform parent, Action<string> whenFinishEditing, bool isDisabled = false, TMP_InputField.CharacterValidation characterValidation = TMP_InputField.CharacterValidation.Regex, float minLimit = float.MinValue, float maxLimit = float.MaxValue)
         {
-            IPInputField inputField = (isVertical) ? inputFieldVerticalPool.Get(parent) : inputFieldPool.Get(parent);
-            inputField.name = $"{title} InputField";
-            inputField.Construct(title, value, whenFinishEditing, characterValidation, minLimit, maxLimit);
-            inputField.SetDisabled(isDisabled);
-        }
-
-        /// <summary>
-        /// Builds the Input Field Area Property.
-        /// </summary>
-        /// <param name="title">Name of the property.</param>
-        /// <param name="value">Starting value of the property</param>
-        /// <param name="parent">Under which transform is this property going to be created.</param>
-        /// <param name="whenFinishEditing">Is called when the user finishes editing the InputField.</param>
-        /// <param name="isDisabled">Initialize the property as a non-interactable.</param>
-        /// <param name="characterValidation">The validation to use for inputted symbols.</param>
-        /// <param name="minLimit">The minimum allowed value (when InputField deals with numbers).</param>
-        /// <param name="maxLimit">The maximum allowed value (when InputField deals with numbers).</param>
-        /// <returns>The property itself.</returns>
-        public void BuildInputFieldArea(string title, string value, Transform parent, Action<string> whenFinishEditing, bool isDisabled = false, TMP_InputField.CharacterValidation characterValidation = TMP_InputField.CharacterValidation.Regex, float minLimit = float.MinValue, float maxLimit = float.MaxValue)
-        {
-            IPInputField inputField = inputFieldAreaPool.Get(parent);
+            IPInputField inputField = inputFieldPool.Get(parent);
             inputField.name = $"{title} InputField";
             inputField.Construct(title, value, whenFinishEditing, characterValidation, minLimit, maxLimit);
             inputField.SetDisabled(isDisabled);
@@ -137,29 +100,13 @@ namespace RedRats.UndoRedo.UIElements
         /// <param name="parent">Under which transform is this property going to be created.</param>
         /// <param name="whenValueChange">What happens when the property changes value.</param>
         /// <param name="isDisabled">Initialize the property as a non-interactable.</param>
-        /// <param name="isVertical">Use the vertical variant (title text is above field)?</param>
         /// <returns>The property itself.</returns>
-        public void BuildDropdown(string title, IEnumerable<string> options, int value, Transform parent, Action<int> whenValueChange, bool isDisabled = false, bool isVertical = false)
+        public void BuildDropdown(string title, IEnumerable<string> options, int value, Transform parent, Action<int> whenValueChange, bool isDisabled = false)
         {
-            IPDropdown dropdown = (isVertical) ? dropdownVerticalPool.Get(parent) : dropdownPool.Get(parent);
+            IPDropdown dropdown = dropdownPool.Get(parent);
             dropdown.name = $"{title} Dropdown";
             dropdown.Construct(title, options, value, whenValueChange);
             dropdown.SetDisabled(isDisabled);
-        }
-
-        /// <summary>
-        /// Builds the Plain Text Property.
-        /// </summary>
-        /// <param name="title">Name of the property.</param>
-        /// <param name="value">Starting value of the property</param>
-        /// <param name="parent">Under which transform is this property going to be created.</param>
-        /// <param name="isVertical">Use the vertical variant (title text is above field)?</param>
-        /// <returns>The property itself.</returns>
-        public void BuildPlainText(string title, string value, Transform parent, bool isVertical = false)
-        {
-            IPPlainText plainText = (isVertical) ? plainTextVerticalPool.Get(parent) : plainTextPool.Get(parent);
-            plainText.name = $"{title} PlainText";
-            plainText.Construct(title, value);
         }
 
         /// <summary>

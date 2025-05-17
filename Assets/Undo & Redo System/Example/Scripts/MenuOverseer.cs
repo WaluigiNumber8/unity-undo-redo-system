@@ -8,21 +8,20 @@ namespace RedRats.Example.Core
     /// <summary>
     /// Overseer actions happening in the menu.
     /// </summary>
-    public class MenuOverseer : MonoBehaviour
+    public class MenuOverseer : MonoSingleton<MenuOverseer>
     {
         [SerializeField] private InteractableEditorGrid grid;
         [SerializeField] private RectTransform propertiesContent;
         [Space]
-        [SerializeField] private Color brushColor = Color.cornflowerBlue;
-
         [SerializeField] private Sprite brushSprite;
-        
         
         private ToolBox<int> toolbox;
         private ObjectGrid<int> data;
+        private ToolType currentTool;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             toolbox = new ToolBox<int>(grid, grid.UpdateCell, -1);
             data = new ObjectGrid<int>(grid.Size.x, grid.Size.y, () => -1);
         }
@@ -36,25 +35,27 @@ namespace RedRats.Example.Core
 
         private void OnEnable()
         {
-            grid.OnClick += UseBrush;
+            grid.OnClick += UseTool;
             grid.OnClickAlternative += UseEraser;
         }
 
         private void OnDisable()
         {
-            grid.OnClick -= UseBrush;
+            grid.OnClick -= UseTool;
             grid.OnClickAlternative -= UseEraser;
         }
 
-        public void UseBrush(Vector2Int position)
+        public void SwitchTool(ToolType tool)
         {
-            toolbox.ApplySpecific(ToolType.Brush, data, position, 0, brushSprite, grid.ActiveLayer);
+            currentTool = tool;
         }
         
-        public void UseEraser(Vector2Int position)
+        private void UseEraser(Vector2Int position) => UseTool(ToolType.Eraser, position);
+        private void UseTool(Vector2Int position) => UseTool(currentTool, position);
+        private void UseTool(ToolType tool, Vector2Int position)
         {
-            Sprite emptySprite = new SpriteBuilder().WithSingleColorTexture(Color.clear, 16, 16).WithPPU(16).Build();
-            toolbox.ApplySpecific(ToolType.Eraser, data, position, 0, emptySprite, grid.ActiveLayer);
+            Sprite sprite = tool == ToolType.Eraser ? new SpriteBuilder().WithSingleColorTexture(Color.clear, 16, 16).WithPPU(16).Build() : brushSprite;
+            toolbox.ApplySpecific(tool, data, position, 0, sprite, grid.ActiveLayer);
         }
     }
 }

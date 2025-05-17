@@ -1,5 +1,6 @@
 ﻿using RedRats.ActionHistory;
 using RedRats.Core;
+using RedRats.DrawingGrid.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,5 +41,7 @@ namespace RedRats.Example.Core
         
         public void Undo() => ActionHistorySystem.Undo();
         public void Redo() => ActionHistorySystem.Redo();
+        
+        public void SwitchTool(int value) => MenuOverseer.Instance.SwitchTool((ToolType) value);
     }
 }

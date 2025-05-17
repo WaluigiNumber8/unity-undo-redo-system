@@ -42,7 +42,7 @@ namespace RedRats.DrawingGrid
             drawer = new SpriteDrawer(gridSize, new Vector2Int(spriteSize, spriteSize), spriteSize);
             cam = Camera.main;
             
-            cellSize = new Vector2(ttransform.rect.width / gridSize.x, ttransform.rect.height / gridSize.y);
+            cellSize = new Vector2(Mathf.Abs(ttransform.rect.width) / gridSize.x, Mathf.Abs(ttransform.rect.height) / gridSize.y);
             
             PrepareLayers();
             SwitchActiveLayer(0);

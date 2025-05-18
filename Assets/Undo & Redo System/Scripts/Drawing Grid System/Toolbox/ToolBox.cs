@@ -12,16 +12,12 @@ namespace RedRats.DrawingGrid.Tools
     public class ToolBox<T> : IToolBox where T : IComparable
     {
         public event Action<ToolType> OnSwitchTool;
-        public event Action<T> OnChangePaletteValue;
-        public event Action<T> OnSelectValue;
 
         private readonly InteractableEditorGridBase UIGrid;
         
-        private readonly SelectionTool<T> toolSelection;
         private readonly BrushTool<T> toolBrush;
         private readonly BrushTool<T> toolEraser;
         private readonly BucketTool<T> toolBucket;
-        private readonly PickerTool<T> toolPicker;
 
         private readonly Action<int, Vector2Int, Sprite> whenGraphicDraw;
         private readonly T emptyValue;
@@ -34,15 +30,9 @@ namespace RedRats.DrawingGrid.Tools
             this.UIGrid = UIGrid;
             this.whenGraphicDraw = whenGraphicDraw;
             
-            toolSelection = new SelectionTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
             toolBrush = new BrushTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
             toolEraser = new BrushTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
             toolBucket = new BucketTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
-            toolPicker = new PickerTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
-            
-
-            toolSelection.OnSelectValue += data => OnSelectValue?.Invoke(data);
-            toolPicker.OnPickValue += data => OnChangePaletteValue?.Invoke(data);
             
             currentToolType = ToolType.None;
             SwitchTool(ToolType.Brush);
@@ -80,11 +70,9 @@ namespace RedRats.DrawingGrid.Tools
             if (currentToolType == tool) return;
             currentTool = tool switch
             {
-                ToolType.Selection => toolSelection,
                 ToolType.Brush => toolBrush,
                 ToolType.Eraser => toolEraser,
                 ToolType.Fill => toolBucket,
-                ToolType.ColorPicker => toolPicker,
                 _ => throw new InvalidOperationException("Unknown or not yet supported Tool Type.")
             };
             currentToolType = tool;
@@ -108,11 +96,9 @@ namespace RedRats.DrawingGrid.Tools
         {
             ToolBase<T> tool = toolType switch
             {
-                ToolType.Selection => toolSelection,
                 ToolType.Brush => toolBrush,
                 ToolType.Eraser => toolEraser,
                 ToolType.Fill => toolBucket,
-                ToolType.ColorPicker => toolPicker,
                 _ => throw new InvalidOperationException("Unknown or not yet supported Tool Type.")
             };
             return tool;

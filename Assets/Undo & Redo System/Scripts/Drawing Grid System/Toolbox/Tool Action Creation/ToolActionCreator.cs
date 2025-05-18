@@ -17,8 +17,6 @@ namespace RedRats.DrawingGrid.Tools
             factories = new Dictionary<Type, IToolActionFactory<T>>();
             factories.Add(typeof(BrushTool<T>), new BrushToolActionFactory<T>());
             factories.Add(typeof(BucketTool<T>), new BucketToolActionFactory<T>());
-            factories.Add(typeof(PickerTool<T>), new SilentToolsActionFactory<T>());
-            factories.Add(typeof(SelectionTool<T>), new SilentToolsActionFactory<T>());
         }
 
         public static ActionBase<T> Create(ToolBase<T> tool, ObjectGrid<T> grid, Vector2Int position, T value, T lastValue, Sprite graphicValue, Sprite lastGraphicValue, int layer, Action<T> fallback)

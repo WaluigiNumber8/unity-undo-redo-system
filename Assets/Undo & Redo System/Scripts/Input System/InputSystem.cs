@@ -12,7 +12,6 @@ namespace RedRats.Input
     [DefaultExecutionOrder(-50)]
     public class InputSystem : MonoSingleton<InputSystem>
     {
-        private EventSystem eventSystem;
         private TestInputActions input;
         
         private InputProfileUI inputUI;
@@ -22,7 +21,6 @@ namespace RedRats.Input
         {
             base.Awake();
             ClearAllInput();
-            SceneManager.sceneLoaded += (_, __) => eventSystem = FindFirstObjectByType<EventSystem>();
         }
 
         public void ClearAllInput()

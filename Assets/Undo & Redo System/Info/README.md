@@ -8,6 +8,7 @@ This is a free undo/redo system for Unity that:
 
 Tested in Unity 6000.1.2f1.
 
+
 # Structure & Requirements
 The package is split into 3 assembly definitions:
 
@@ -23,10 +24,12 @@ The package is split into 3 assembly definitions:
 - Contains the example scene with a drawing grid and it's custom actions.
 - Requires **Unity.InputSystem**, **RedRats.Core** and **RedRats.UndoRedoSystem** as a reference.
 
-# Quick Start
+
+# Project Setup
 
 1. Import the package into your project.
 2. All interactions with the system go through the `ActionHistorySystem` static class via it's `AddAndExecute()`, `Undo()` & `Redo() `methods.
+
 
 # Using Action Grouping
 1. If you _don't want_ to use action grouping (required for sliders and drawing grid to work), disable the behaviour with the following line
@@ -37,6 +40,7 @@ The package is split into 3 assembly definitions:
 
    (_for example if 3 actions affecting a single dropdown come to AHS, they are grouped. If the next action affects a toggle or a different dropdown, the current group is closed and the current action starts a new one._)
 3. To enable something akin to an _automated grouping system_, you can hook the StartNewGroup() and EndCurrentGroup() methods to pressing/releasing the left mouse button. The example does this in it's InputSystem class via the _ClearAllInput()_ method.
+
 
 # Adding custom actions
 If you want to add support for your custom ui elements or different actions, follow:
@@ -50,8 +54,8 @@ If you want to add support for your custom ui elements or different actions, fol
 
 For details look at the built-in examples. (For Dropdown you want to see classes `UpdateDropdownAction` - action and `IPDropdown` - caller) 
 
-# System Overview
 
+# System Overview
 ![Undo/Redo class diagram](Images/UndoRedo_class_diagram.jpg)
 - **ActionHistorySystem** - The main controller of the system. It handles the undo/redo stacks and action grouping.
 - **IAction** - The base interface for all actions, normal and special opens like grouping actions.
@@ -59,6 +63,19 @@ For details look at the built-in examples. (For Dropdown you want to see classes
 - **GroupActionBase** - A base for all grouping actions. Not necessary to be changed.
 - **GroupAction** - A grouping action that allows grouping under the same constructed. Is used by default.
 - **MixedGroupAction** - A grouping action that allows grouping under _different_ constructs. To use it, you must enable it when calling `StartNewGroup()` in AHS.
+
+
+# Key Methods
+- ActionHistorySystem.AddAndExecute() - Adds an action to the stack and executes it.
+- ActionHistorySystem.Undo() - Undoes the last action.
+- ActionHistorySystem.Redo() - Redoes the last undone action.
+- ActionHistorySystem.StartNewGroup() - Starts a new group of actions. Can be set to start a group that can contain actions with different constructs.
+- ActionHistorySystem.EndCurrentGroup() - Ends the current group of actions.
+
+# System in detail
+To understand the inner workings of the system in more detail, you can look in the attached thesis. (Unfortunately, it is only in Czech/Čeština).
+
+thesis_name_here
 
 # Credits
 Fonts used in the example:

@@ -1,4 +1,5 @@
 
+# Undo/Redo with Action Grouping
 This is a free undo/redo system for Unity that:
 
 - Uses a 2-stack system with the Command pattern to add undo/redo to your game/editor.
@@ -9,7 +10,7 @@ This is a free undo/redo system for Unity that:
 Tested in Unity 6000.1.2f1.
 
 
-# Structure & Requirements
+## Structure & Requirements
 The package is split into 3 assembly definitions:
 
 ### **RedRats.Core**
@@ -25,13 +26,13 @@ The package is split into 3 assembly definitions:
 - Requires **Unity.InputSystem**, **RedRats.Core** and **RedRats.UndoRedoSystem** as a reference.
 
 
-# Project Setup
+## Project Setup
 
 1. Import the package into your project.
 2. All interactions with the system go through the `ActionHistorySystem` static class via it's `AddAndExecute()`, `Undo()` & `Redo() `methods.
 
 
-# Using Action Grouping
+## Using Action Grouping
 1. If you _don't want_ to use action grouping (required for sliders and drawing grid to work), disable the behaviour with the following line
 `ActionHistorySystem.EnableGroupingBehaviour(false)`
 
@@ -42,7 +43,7 @@ The package is split into 3 assembly definitions:
 3. To enable something akin to an _automated grouping system_, you can hook the StartNewGroup() and EndCurrentGroup() methods to pressing/releasing the left mouse button. The example does this in it's InputSystem class via the _ClearAllInput()_ method.
 
 
-# Adding custom actions
+## Adding custom actions
 If you want to add support for your custom ui elements or different actions, follow:
 1. Create a new class and make it inherit from `ActionBase<T>`, where T represents a value that is changed in the action.
 
@@ -55,7 +56,7 @@ If you want to add support for your custom ui elements or different actions, fol
 For details look at the built-in examples. (For Dropdown you want to see classes `UpdateDropdownAction` - action and `IPDropdown` - caller) 
 
 
-# System Overview
+## System Overview
 ![Undo/Redo class diagram](Images/UndoRedo_class_diagram.jpg)
 - **ActionHistorySystem** - The main controller of the system. It handles the undo/redo stacks and action grouping.
 - **IAction** - The base interface for all actions, normal and special opens like grouping actions.
@@ -65,19 +66,19 @@ For details look at the built-in examples. (For Dropdown you want to see classes
 - **MixedGroupAction** - A grouping action that allows grouping under _different_ constructs. To use it, you must enable it when calling `StartNewGroup()` in AHS.
 
 
-# Key Methods
+## Key Methods
 - ActionHistorySystem.AddAndExecute() - Adds an action to the stack and executes it.
 - ActionHistorySystem.Undo() - Undoes the last action.
 - ActionHistorySystem.Redo() - Redoes the last undone action.
 - ActionHistorySystem.StartNewGroup() - Starts a new group of actions. Can be set to start a group that can contain actions with different constructs.
 - ActionHistorySystem.EndCurrentGroup() - Ends the current group of actions.
 
-# System in detail
+## System in detail
 To understand the inner workings of the system in more detail, you can look in the attached thesis. (Unfortunately, it is only in Czech/Čeština).
 
 [master_thesis(CZ)](Documentation_and_implementation_of_functions_that_improve_the_usability_of_the_software_Jan_Kunetka.pdf)
 
-# Credits
+## Credits
 Fonts used in the example:
 
 - Perfect DOS VGA 437 by Zeh Fernando

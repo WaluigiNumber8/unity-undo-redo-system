@@ -82,3 +82,9 @@ Fonts used in the example:
 
 - Perfect DOS VGA 437 by Zeh Fernando
 - Bit Cell by memesbruh03
+
+## Other Projects
+#### Shortcut Linking + Remapping
+- Besides this system I have also created a Shortcut Linking + Remapping system that supports variable combinations.
+- Available on GitHub: [RedRats.ShortcutSystem](https://github.com/WaluigiNumber8/unity-shortcuts-and-remapping-system)
+- **An unfortunate limitation is**, (due to lack of time) it cannot be imported into the same project as this one, unless you manually merge the functionality of this feature's InputSystem and UI Elements System with the other one.

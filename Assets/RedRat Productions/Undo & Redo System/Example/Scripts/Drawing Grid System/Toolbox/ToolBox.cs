@@ -23,12 +23,14 @@ namespace RedRats.DrawingGrid.Tools
         private readonly T emptyValue;
         private ToolBase<T> currentTool;
         private ToolType currentToolType;
+        private readonly Sprite emptySprite;
 
         public ToolBox(InteractableEditorGridBase UIGrid, Action<int, Vector2Int, Sprite> whenGraphicDraw, T emptyValue)
         {
             this.emptyValue = emptyValue;
             this.UIGrid = UIGrid;
             this.whenGraphicDraw = whenGraphicDraw;
+            emptySprite = new SpriteBuilder().WithEmptyTexture(16, 16).WithPPU(16).Build();
             
             toolBrush = new BrushTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
             toolEraser = new BrushTool<T>(WhenDrawOnUIGrid, this.UIGrid.Apply);
@@ -110,7 +112,7 @@ namespace RedRats.DrawingGrid.Tools
             if (tool == toolEraser)
             {
                 value = emptyValue;
-                graphicValue = new SpriteBuilder().WithEmptyTexture(16, 16).Build();
+                graphicValue = emptySprite;
             }
             
             //Update old values

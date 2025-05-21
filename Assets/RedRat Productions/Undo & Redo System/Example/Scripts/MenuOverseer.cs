@@ -54,8 +54,7 @@ namespace RedRats.Example.Core
         private void UseTool(Vector2Int position) => UseTool(currentTool, position);
         private void UseTool(ToolType tool, Vector2Int position)
         {
-            Sprite sprite = tool == ToolType.Eraser ? new SpriteBuilder().WithSingleColorTexture(Color.clear, 16, 16).WithPPU(16).Build() : brushSprite;
-            toolbox.ApplySpecific(tool, data, position, 0, sprite, grid.ActiveLayer);
+            toolbox.ApplySpecific(tool, data, position, 0, brushSprite, grid.ActiveLayer);
         }
     }
 }

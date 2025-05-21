@@ -42,7 +42,7 @@ namespace RedRats.Core
             return this;
         }
         
-        public SpriteBuilder WithEmptyTexture(int width, int height) => WithSingleColorTexture(new Color(0, 0, 0, 1), width, height);
+        public SpriteBuilder WithEmptyTexture(int width, int height) => WithSingleColorTexture(new Color(0, 0, 0, 0), width, height);
 
         public Sprite Build()
         {
